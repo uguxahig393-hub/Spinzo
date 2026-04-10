@@ -2,25 +2,24 @@
 <html>
 <head>
   <title>Spin & Earn</title>
+
   <style>
     body {
+      margin: 0;
       font-family: Arial;
       text-align: center;
-      background: linear-gradient(#5b0f9c, #2d014d);
+      background: linear-gradient(#6a11cb, #3b0066);
       color: white;
     }
 
-    .box {
-      margin-top: 20px;
-    }
-
-    .balance {
-      font-size: 30px;
-      margin: 10px;
+    .top {
+      display: flex;
+      justify-content: space-around;
+      padding: 10px;
     }
 
     .btn {
-      padding: 10px 20px;
+      padding: 10px 15px;
       background: orange;
       border: none;
       color: white;
@@ -29,21 +28,47 @@
       cursor: pointer;
     }
 
+    .balance {
+      font-size: 28px;
+      margin-top: 10px;
+    }
+
+    .progressBox {
+      width: 80%;
+      margin: auto;
+      background: #ccc;
+      border-radius: 20px;
+      margin-top: 10px;
+    }
+
+    .progress {
+      height: 12px;
+      width: 0%;
+      background: orange;
+      border-radius: 20px;
+    }
+
+    .wheelBox {
+      position: relative;
+      margin-top: 20px;
+    }
+
     .wheel {
-      width: 250px;
-      height: 250px;
+      width: 280px;
+      height: 280px;
       border-radius: 50%;
       border: 8px solid white;
-      margin: 20px auto;
-      position: relative;
+      margin: auto;
       transition: transform 3s ease-out;
       background: conic-gradient(
-        red 0deg 60deg,
-        blue 60deg 120deg,
-        green 120deg 180deg,
-        yellow 180deg 240deg,
-        pink 240deg 300deg,
-        orange 300deg 360deg
+        #ff4d4d 0deg 45deg,
+        #4da6ff 45deg 90deg,
+        #66ff66 90deg 135deg,
+        #ffff66 135deg 180deg,
+        #ff66cc 180deg 225deg,
+        #ffa31a 225deg 270deg,
+        #b366ff 270deg 315deg,
+        #00cccc 315deg 360deg
       );
     }
 
@@ -55,26 +80,66 @@
       border-bottom: 30px solid white;
       margin: auto;
     }
+
+    .labels div {
+      position: absolute;
+      font-size: 12px;
+      font-weight: bold;
+      color: black;
+    }
+
+    .spinBtn {
+      margin-top: 15px;
+    }
   </style>
 </head>
 
 <body>
 
-<h2>Spin & Earn</h2>
+<!-- Top Buttons -->
+<div class="top">
+  <button class="btn">Rank</button>
+  <button class="btn">Invitation</button>
+  <button class="btn">Cash Out</button>
+</div>
 
-<div class="balance">Balance: ₹<span id="bal">0</span></div>
-<div>Spins Left: <span id="spins">3</span></div>
+<!-- Balance -->
+<div class="balance">₹<span id="bal">0</span></div>
 
+<!-- Progress -->
+<div class="progressBox">
+  <div class="progress" id="progress"></div>
+</div>
+<p id="leftText"></p>
+
+<!-- Pointer -->
 <div class="pointer"></div>
-<div class="wheel" id="wheel"></div>
 
-<button class="btn" onclick="spin()">SPIN</button>
-<br><br>
+<!-- Wheel -->
+<div class="wheelBox">
+  <div class="wheel" id="wheel"></div>
 
-<button class="btn" onclick="refer()">Invite (Get 1 Spin)</button>
-<br><br>
+  <!-- Labels -->
+  <div class="labels">
+    <div style="top:20px; left:120px;">Mini</div>
+    <div style="top:80px; right:20px;">Mega</div>
+    <div style="bottom:70px; right:30px;">Double</div>
+    <div style="bottom:20px; left:120px;">Mini</div>
+    <div style="bottom:80px; left:20px;">Medium</div>
+    <div style="top:80px; left:20px;">₹100</div>
+  </div>
+</div>
 
-<button class="btn" onclick="withdraw()">Withdraw</button>
+<!-- Buttons -->
+<div class="spinBtn">
+  <button class="btn" onclick="spin()">SPIN</button>
+  <br><br>
+  <button class="btn" onclick="refer()">Invite (Get 1 Spin)</button>
+  <br><br>
+  <button class="btn" onclick="withdraw()">Withdraw</button>
+  <br><br>
+  <button class="btn" onclick="copyLink()">Copy Invite Link</button>
+</div>
 
 <script>
 let balance = 0;
@@ -83,7 +148,17 @@ let spinCount = 0;
 
 function updateUI(){
   document.getElementById("bal").innerText = balance;
-  document.getElementById("spins").innerText = spins;
+
+  let percent = (balance / 250) * 100;
+  if(percent > 100) percent = 100;
+
+  document.getElementById("progress").style.width = percent + "%";
+
+  let left = 250 - balance;
+  if(left < 0) left = 0;
+
+  document.getElementById("leftText").innerText =
+    "Only ₹" + left + " to cash out ₹250!";
 }
 
 function spin(){
@@ -99,21 +174,19 @@ function spin(){
 
   if(spinCount === 1){
     win = 160;
-  }
-  else if(spinCount === 2){
+  } else if(spinCount === 2){
     win = Math.floor(Math.random() * 10) + 1;
-  }
-  else if(spinCount === 3){
+  } else if(spinCount === 3){
     win = Math.floor(Math.random() * 5) + 1;
-  }
-  else{
+  } else {
     win = Math.floor(Math.random() * 5) + 1;
   }
 
   balance += win;
 
   let deg = Math.floor(Math.random() * 360) + 720;
-  document.getElementById("wheel").style.transform = "rotate(" + deg + "deg)";
+  document.getElementById("wheel").style.transform =
+    "rotate(" + deg + "deg)";
 
   setTimeout(()=>{
     alert("You won ₹" + win);
@@ -123,8 +196,7 @@ function spin(){
 
 function refer(){
   spins++;
-  updateUI();
-  alert("Referral Success! +1 Spin");
+  alert("+1 Spin added!");
 }
 
 function withdraw(){
@@ -135,6 +207,12 @@ function withdraw(){
     alert("Minimum ₹200 required");
   }
   updateUI();
+}
+
+function copyLink(){
+  let link = window.location.href;
+  navigator.clipboard.writeText(link);
+  alert("Link copied!");
 }
 
 updateUI();
