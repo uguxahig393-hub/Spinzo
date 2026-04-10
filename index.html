@@ -2,30 +2,36 @@
 <html>
 <head>
   <title>Spin & Earn</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
     body {
       margin: 0;
       font-family: Arial;
-      text-align: center;
       background: linear-gradient(#6a11cb, #3b0066);
       color: white;
     }
 
+    .container {
+      width: 100%;
+      min-height: 100vh;
+      padding: 10px;
+      box-sizing: border-box;
+      text-align: center;
+    }
+
     .top {
       display: flex;
-      justify-content: space-around;
-      padding: 10px;
+      justify-content: space-between;
     }
 
     .btn {
-      padding: 10px 15px;
+      padding: 8px 12px;
       background: orange;
       border: none;
       color: white;
       font-weight: bold;
-      border-radius: 10px;
-      cursor: pointer;
+      border-radius: 8px;
     }
 
     .balance {
@@ -34,31 +40,33 @@
     }
 
     .progressBox {
-      width: 80%;
-      margin: auto;
+      width: 95%;
+      margin: 10px auto;
       background: #ccc;
       border-radius: 20px;
-      margin-top: 10px;
     }
 
     .progress {
-      height: 12px;
+      height: 10px;
       width: 0%;
       background: orange;
       border-radius: 20px;
     }
 
     .wheelBox {
+      width: 90vw;
+      height: 90vw;
+      max-width: 320px;
+      max-height: 320px;
+      margin: 20px auto;
       position: relative;
-      margin-top: 20px;
     }
 
     .wheel {
-      width: 280px;
-      height: 280px;
+      width: 100%;
+      height: 100%;
       border-radius: 50%;
-      border: 8px solid white;
-      margin: auto;
+      border: 6px solid white;
       transition: transform 3s ease-out;
       background: conic-gradient(
         #ff4d4d 0deg 45deg,
@@ -75,9 +83,9 @@
     .pointer {
       width: 0;
       height: 0;
-      border-left: 15px solid transparent;
-      border-right: 15px solid transparent;
-      border-bottom: 30px solid white;
+      border-left: 12px solid transparent;
+      border-right: 12px solid transparent;
+      border-bottom: 25px solid white;
       margin: auto;
     }
 
@@ -88,57 +96,62 @@
       color: black;
     }
 
-    .spinBtn {
+    .actions {
       margin-top: 15px;
+    }
+
+    .actions button {
+      display: block;
+      margin: 8px auto;
     }
   </style>
 </head>
 
 <body>
 
-<!-- Top Buttons -->
-<div class="top">
-  <button class="btn">Rank</button>
-  <button class="btn">Invitation</button>
-  <button class="btn">Cash Out</button>
-</div>
+<div class="container">
 
-<!-- Balance -->
-<div class="balance">₹<span id="bal">0</span></div>
-
-<!-- Progress -->
-<div class="progressBox">
-  <div class="progress" id="progress"></div>
-</div>
-<p id="leftText"></p>
-
-<!-- Pointer -->
-<div class="pointer"></div>
-
-<!-- Wheel -->
-<div class="wheelBox">
-  <div class="wheel" id="wheel"></div>
-
-  <!-- Labels -->
-  <div class="labels">
-    <div style="top:20px; left:120px;">Mini</div>
-    <div style="top:80px; right:20px;">Mega</div>
-    <div style="bottom:70px; right:30px;">Double</div>
-    <div style="bottom:20px; left:120px;">Mini</div>
-    <div style="bottom:80px; left:20px;">Medium</div>
-    <div style="top:80px; left:20px;">₹100</div>
+  <!-- Top -->
+  <div class="top">
+    <button class="btn">Rank</button>
+    <button class="btn">Invitation</button>
+    <button class="btn">Cash Out</button>
   </div>
-</div>
 
-<!-- Buttons -->
-<div class="spinBtn">
-  <button class="btn" onclick="spin()">SPIN</button>
-  <br><br>
-  <button class="btn" onclick="refer()">Invite (Get 1 Spin)</button>
-  <br><br>
-  <button class="btn" onclick="withdraw()">Withdraw</button>
-  <br><br>
-  <button class="btn" onclick="copyLink()">Copy Invite Link</button>
+  <!-- Balance -->
+  <div class="balance">₹<span id="bal">0</span></div>
+
+  <!-- Progress -->
+  <div class="progressBox">
+    <div class="progress" id="progress"></div>
+  </div>
+  <p id="leftText"></p>
+
+  <!-- Pointer -->
+  <div class="pointer"></div>
+
+  <!-- Wheel -->
+  <div class="wheelBox">
+    <div class="wheel" id="wheel"></div>
+
+    <div class="labels">
+      <div style="top:10px; left:120px;">Mini</div>
+      <div style="top:70px; right:10px;">Mega</div>
+      <div style="bottom:60px; right:20px;">Double</div>
+      <div style="bottom:10px; left:120px;">Mini</div>
+      <div style="bottom:70px; left:10px;">Medium</div>
+      <div style="top:70px; left:10px;">₹100</div>
+    </div>
+  </div>
+
+  <!-- Buttons -->
+  <div class="actions">
+    <button class="btn" onclick="spin()">SPIN</button>
+    <button class="btn" onclick="refer()">Invite (Get 1 Spin)</button>
+    <button class="btn" onclick="withdraw()">Withdraw</button>
+    <button class="btn" onclick="copyLink()">Copy Invite Link</button>
+  </div>
+
 </div>
 
 <script>
